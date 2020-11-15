@@ -71,6 +71,10 @@ class Admin extends CI_Controller
         // $data['kegiatan'] = $this->Kegiatan_model->getAllKegiatan();
         $data['start'] = $this->uri->segment(3);
         $data['kegiatan'] = $this->Kegiatan_model->getKegiatan($config['per_page'], $data['start'], $data['keyword']);
+        $data['count']=$this->Kegiatan_model-> countKegiatan();
+        $data['countuser']=$this->Kegiatan_model-> countUser();
+        $data['countstatus']=$this->Kegiatan_model-> countApprov();
+        $data['countstatuspending']=$this->Kegiatan_model-> countPending();
         $data['user'] = $this->db->get_where('user', ['email' =>
         $this->session->userdata('email')])->row_array();
 
@@ -197,7 +201,22 @@ class Admin extends CI_Controller
         }
     }
 
+public function update_status($id, $sval){
+   
+        $data['kegiatan'] = $this->Kegiatan_model->update_status($id, $sval);
 
+        if($data>0){
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+            Proposal Status berhasil diupdate!
+          </div>');
+        }else{
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+            Proposal Status gagal diupdate!
+          </div>');
+        
+    }
+    return redirect('admin/index');
+}
 
     public function hapus($id)
     {

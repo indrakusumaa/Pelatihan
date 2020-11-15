@@ -48,6 +48,7 @@
                     <th scope="col">Nama Kegiatan</th>
                     <th scope="col">Nama Pengusul</th>
                     <th scope="col">Tanggal Masuk</th>
+                    <th scope="col">Status</th>
                     <th scope="col" style="text-align: center;"> <i class="fas fa-info-circle"> Opsi</i></th>
                 </tr>
 
@@ -68,13 +69,29 @@
                         <td><?= $k['pengusul']; ?></td>
                         <td><?= date('d F Y H:i:s', $k['date_created']); ?></td>
 
-                        <td style="text-align: center;">
+                        <td style="text-align: center; width:100px">
+                        <?php 
+                        $status=$k['status'];
+                        if($status==1){                        
+                        ?>
+                           <p class="badge badge-success">Approve</p>
+
+                           <?php 
+                        }else{
+                           ?>
+                              <p class="badge badge-danger">Pending</p>
+
+                        <?php }
+                        ?>
+                        </td>
+
+                        <td style="text-align: center; width:200px">
                             <?php if ($this->session->userdata('role_id') == 1) : ?>
-                                <a style="margin-right: 5px;" href="<?= base_url('admin/detail/') . $k['id']; ?>" class="badge badge-warning">Detail</a>
-                                <a style="text-align: center;" href="<?= base_url('admin/hapus/') . $k['id']; ?>" class="badge badge-danger" onclick="return confirm('Apakah anda yakin?');">Delete</a>
+                                <a  href="<?= base_url('admin/detail/') . $k['id']; ?>" class="btn btn-warning">Detail</a>
+                                <a style="text-align: center;" href="<?= base_url('admin/hapus/') . $k['id']; ?>" class="bbtn btn-danger" onclick="return confirm('Apakah anda yakin?');">Delete</a>
                             <?php else : ?>
-                                <a style="margin-right: 5px;" href="<?= base_url('user/detail/') . $k['id']; ?>" class="badge badge-warning">Detail</a>
-                                <a style="text-align: center;" href="<?= base_url('user/hapus/') . $k['id']; ?>" class="badge badge-danger" onclick="return confirm('Apakah anda yakin?');">Delete</a>
+                                <a  href="<?= base_url('user/detail/') . $k['id']; ?>" class="btn btn-warning">Detail</a>
+                                <a style="text-align: center;" href="<?= base_url('user/hapus/') . $k['id']; ?>" class="btn btn-danger" onclick="return confirm('Apakah anda yakin?');">Delete</a>
                             <?php endif; ?>
 
                         </td>

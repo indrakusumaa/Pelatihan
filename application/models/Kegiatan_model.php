@@ -39,7 +39,26 @@ class Kegiatan_model extends CI_model
     {
         return $this->db->get('kegiatan')->num_rows();
     }
-
+    public function countUser()
+    {
+        return $this->db->get('user')->num_rows();
+    }
+    public function countApprov()
+    {
+            $this->db->select('*');
+            $this->db->from('kegiatan');
+            $this->db->where('status','1');
+            $query = $this->db->get()->num_rows();
+            return $query;
+    }
+    public function countPending()
+    {
+            $this->db->select('*');
+            $this->db->from('kegiatan');
+            $this->db->where('status','0');
+            $query = $this->db->get()->num_rows();
+            return $query;
+    }
     public function countKegiatanUser()
     {
         $id = $this->session->userdata('id');
@@ -192,4 +211,18 @@ class Kegiatan_model extends CI_model
     {
         return $this->db->get_where('kegiatan', ['id' => $id])->row_array();
     }
+
+    public function update_status($id, $sval){
+        if($sval==1){
+            $status=0;
+        }else{
+            $status=1;
+        }
+        $data=array(
+            'status' =>$status
+        );
+        $this->db->where('id', $id);
+        $this->db->update('kegiatan', $data);
+    }
+  
 }
